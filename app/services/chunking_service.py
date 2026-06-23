@@ -14,4 +14,4 @@ def chunk_embeddings(text: str, chunk_size: int = 500, overlap: int = 100):
 
         start += chunk_size - overlap
 
-    return chunk
+    return chunks
