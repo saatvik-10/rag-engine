@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Text
 from pgvector.sqlalchemy import Vector
-from app.db.database import Base
+from app.db.db import Base
 
 
 class Chunk(Base):
