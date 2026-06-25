@@ -1,5 +1,5 @@
 from app.schemas.chunk_schema import ChunkClass
-from app.services.chunking_service import chunk_documents
+from app.services.chunking_service import chunk_document
 from app.services.embedding_service import generate_embeddings
 from app.services.create_chunk_service import create
 from app.db.db import SessionLocal
@@ -12,7 +12,7 @@ He is now working on a RAG engine
 
 db = SessionLocal()
 
-chunks = chunk_documents(text)
+chunks = chunk_document(text)
 
 for chunk in chunks:
     embeddings = generate_embeddings(chunk)

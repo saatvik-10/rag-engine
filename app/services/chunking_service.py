@@ -1,4 +1,4 @@
-def chunk_documents(text: str, chunk_size: int = 500, overlap: int = 100):
+def chunk_document(text: str, chunk_size: int = 500, overlap: int = 100):
     words = text.split()
 
     chunks = []
