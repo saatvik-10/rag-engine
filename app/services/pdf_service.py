@@ -9,12 +9,7 @@ def extract_pdf(pdf_path: PdfPage):
 
     for idx, page in enumerate(document):
 
-        text = page.get_text()
-
-        if not text.strip():
-            continue
-
-        pages.append(PdfPage(page=idx + 1, text=text, source=pdf_path.split("/")[-1]))
+        pages.append(PdfPage(page=idx + 1, text=page.get_text()))
 
     document.close()
 

@@ -14,16 +14,7 @@ def chunks_retrieval(query: str, top_k: int, db: Session):
     for chunk in chunks:
         score = cosine_similarity(query_embedding, chunk.embedding)
 
-        results.append(
-            {
-                "id": chunk.id,
-                "text": chunk.text,
-                "page_number": chunk.page,
-                "chunk_index": chunk.chunk_index,
-                "source": chunk.source,
-                "score": score,
-            }
-        )
+        results.append({"id": chunk.id, "chunk": chunk.text, "score": score})
 
     results.sort(key=lambda x: x["score"], reverse=True)
 
