@@ -1,19 +1,21 @@
 from sqlalchemy.orm import Session
 
-from app.services.chunking_service import chunk_page
+from app.services.chunking_service import chunk_document
 from app.services.embedding_service import generate_embeddings
 from app.services.create_chunk_service import create
-from app.services.pdf_service import extract_pdf
+
+from app.schemas.chunk_schema import ChunkClass
+from app.schemas.ingest_schema import IngestRequest
 
 
-def ingest_document(pdf_path: str, db: Session):
-    pages = extract_pdf(pdf_path)
+def ingest_document(text: IngestRequest, db: Session):
+    chunks = chunk_document(text)
 
-    for page in pages:
-        chunks = chunk_page(page)
+    for chunk in chunks:
+        embedding = generate_embeddings(chunk)
 
-        for chunk in chunks:
-            chunk.embedding = generate_embeddings(chunk.text)
-            create(chunk, db)
+        chunk_data = ChunkClass(chunk, embedding)
+
+        create(chunk_data, db)
 
     return {"message": "Document ingested successfully", "chunks": len(chunks)}
