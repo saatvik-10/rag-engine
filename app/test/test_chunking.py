@@ -1,8 +1,8 @@
-from app.services.chunking_service import chunk_document
+from app.services.chunking_service import chunk_page
 
 text = " ".join([f"word{i}" for i in range(1000)])
 
-chunks = chunk_document(text)
+chunks = chunk_page(text)
 
 print(len(chunks))
 

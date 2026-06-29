@@ -3,4 +3,7 @@ from pydantic import BaseModel
 
 class ChunkClass(BaseModel):
     text: str
-    embedding: list[float]
+    page: int
+    chunk_index: int
+    source: str
+    embedding: list[float] | None = None
