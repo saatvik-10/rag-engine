@@ -1,24 +1,11 @@
-from app.schemas.chunk_schema import ChunkClass
-from app.services.chunking_service import chunk_document
-from app.services.embedding_service import generate_embeddings
-from app.services.create_chunk_service import create
-from app.db.db import SessionLocal
+from app.services.ingestion_service import ingest_document
 
-text = """
-Saatvik is currently learning AI systems.
-He build a memory engine from scratch.
-He is now working on a RAG engine
-""" * 200
+from app.db.db import SessionLocal
 
 db = SessionLocal()
 
-chunks = chunk_document(text)
+test = ingest_document("report.pdf", db)
 
-for chunk in chunks:
-    embeddings = generate_embeddings(chunk)
+db.close
 
-    chunk_data = ChunkClass(text=chunk, embedding=embeddings)
-
-    create(chunk_data, db)
-
-print(f"Stored {len(chunks)} chunks")
+print(test)
