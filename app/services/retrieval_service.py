@@ -1,5 +1,5 @@
 from app.models.chunk import Chunk
-from app.services.similarity_service import cosine_similarity
+# from app.services.similarity_service import cosine_similarity
 from app.services.embedding_service import generate_embeddings
 from sqlalchemy.orm import Session
 
