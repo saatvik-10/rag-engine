@@ -1,4 +1,5 @@
 from app.models.chunk import Chunk
+
 # from app.services.similarity_service import cosine_similarity
 from app.services.embedding_service import generate_embeddings
 from sqlalchemy.orm import Session
@@ -33,8 +34,6 @@ def chunks_retrieval(query: str, top_k: int, db: Session):
 
     distance = Chunk.embedding.cosine_distance(query_embedding)
 
-    results = []
-
     chunks = (
         db.query(Chunk, distance.label("distance"))
         .order_by(distance)
@@ -42,7 +41,7 @@ def chunks_retrieval(query: str, top_k: int, db: Session):
         .all()
     )
 
-    return results.append(
+    return (
         {
             "id": chunk.id,
             "text": chunk.text,
