@@ -53,7 +53,7 @@ Top-K Retrieval
 * SQLAlchemy
 * PyMuPDF
 * Sentence Transformers
-* NumPy
+<!-- * NumPy -->
 
 ## Project Structure
 
