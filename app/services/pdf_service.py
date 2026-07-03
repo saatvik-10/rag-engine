@@ -1,4 +1,6 @@
 import fitz
+from pathlib import Path
+
 from app.schemas.pdf_schema import PdfPage
 
 
@@ -14,7 +16,7 @@ def extract_pdf(pdf_path: PdfPage):
         if not text.strip():
             continue
 
-        pages.append(PdfPage(page=idx + 1, text=text, source=pdf_path.split("/")[-1]))
+        pages.append(PdfPage(page=idx + 1, text=text, source=Path(pdf_path).name))
 
     document.close()
 
