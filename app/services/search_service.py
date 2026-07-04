@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 
 from app.services.retrieval_service import chunks_retrieval
+from app.services.context_builder_service import context_builder
 
 from app.config.threshold_config import RETRIEVAL_THRESHOLD
 
@@ -15,4 +16,6 @@ def search_query(query: str, top_k: int, db: Session):
     if results[0]["score"] < RETRIEVAL_THRESHOLD:
         return {"message": "No relevant context retrieved"}
 
-    return results
+    context = context_builder(results)
+
+    return context
