@@ -5,6 +5,8 @@ from app.config.model_config import LLM_MODEL_NAME
 
 from openrouter import OpenRouter
 
+from app.schemas.llm_schema import LLMResponse
+
 load_dotenv()
 
 
@@ -24,4 +26,11 @@ def generate_answer(prompt: str) -> str:
             stream=False,
         )
 
-        return res.choices[0].message.content
+        return LLMResponse(
+            answer=res.choices[0].message.content,
+            model=res.model,
+            prompt_tokens=res.usage.prompt_tokens,
+            completion_tokens=res.usage.completion_tokens,
+            total_tokens=res.usage.total_tokens,
+            cost=res.usage.cost,
+        )
