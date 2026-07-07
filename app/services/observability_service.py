@@ -1,3 +1,6 @@
+from datetime import datetime
+
+
 def log_query(
     query: str,
     results: list[dict],
@@ -12,7 +15,7 @@ def log_query(
     answer: str,
 ):
     print("\n" + "=" * 60)
-    print("RAG QUERY LOG")
+    print(f"RAG QUERY LOG | {datetime.now().strftime('%H:%M:%S')}")
     print("=" * 60)
 
     print(f"Query: {query}")
