@@ -1,9 +1,12 @@
+import time
+
 from sqlalchemy.orm import Session
 
 from app.services.retrieval_service import chunks_retrieval
 from app.services.context_builder_service import context_builder
 from app.services.prompt_builder import prompt_builder
 from app.services.llm_service import generate_answer
+from app.services.observability_service import log_query
 
 from app.config.threshold_config import RETRIEVAL_THRESHOLD
 
@@ -22,9 +25,25 @@ def search_query(query: str, top_k: int, db: Session):
 
     prompt = prompt_builder(query, context)
 
+    start_time = time.time()
     try:
-        response = generate_answer(prompt)
+        llm_response = generate_answer(prompt)
     except:
         return {"message": "Unable to generate response at the moment."}
+    elapsed_time = time.time() - start_time
 
-    return response
+    log_query(
+        llm_response=llm_response,
+        query=query,
+        context_size=len(context),
+        prompt_size=len(prompt),
+        model=llm_response.model,
+        prompt_tokens=llm_response.prompt_tokens,
+        completion_tokens=llm_response.completion_tokens,
+        total_tokens=llm_response.total_tokens,
+        cost=llm_response.cost,
+        latency=elapsed_time,
+        answer=llm_response.answer,
+    )
+
+    return llm_response.answer
