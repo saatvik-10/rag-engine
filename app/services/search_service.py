@@ -12,6 +12,9 @@ from app.config.threshold_config import RETRIEVAL_THRESHOLD
 
 
 def search_query(query: str, top_k: int, db: Session):
+    sources = []
+    seen = set()
+
     results = chunks_retrieval(query, top_k, db)
 
     if not results:
@@ -20,6 +23,14 @@ def search_query(query: str, top_k: int, db: Session):
     # results already being sorted by descending similarity score
     if results[0]["score"] < RETRIEVAL_THRESHOLD:
         return {"message": "No relevant context retrieved"}
+
+    for result in results:
+        key = (result["source"], result["page"])
+
+        if key not in seen:
+            seen.add(key)
+
+            sources.append({"source": result["source"], "page": result["page"]})
 
     context = context_builder(results)
 
@@ -46,4 +57,4 @@ def search_query(query: str, top_k: int, db: Session):
         answer=llm_response.answer,
     )
 
-    return llm_response.answer
+    return {"answer": llm_response.answer, "sources": sources}
