@@ -11,7 +11,7 @@ Instead of relying on high-level frameworks, this project focuses on implementin
 - PDF document ingestion
 - Page-wise text extraction using PyMuPDF
 - Fixed-size chunking with overlap
-- Metadata-aware chunking (`source`, `page_number`, `chunk_index`)
+- Metadata-aware chunking (`source`, `page`, `chunk_index`)
 - Semantic embeddings using `BAAI/bge-small-en-v1.5`
 - PostgreSQL + pgvector vector storage
 - Native pgvector cosine similarity search
