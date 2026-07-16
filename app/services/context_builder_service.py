@@ -3,7 +3,7 @@ def context_builder(results: list[dict]) -> str:
 
     for result in results:
         source = result["source"]
-        page = result["page_number"]
+        page = result["page"]
         chunk = result["text"]
 
         formatted_schunk = f"""Document::{source}

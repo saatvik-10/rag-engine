@@ -4,8 +4,8 @@ from datetime import datetime
 def log_query(
     query: str,
     results: list[dict],
-    context_chars: int,
-    prompt_chars: int,
+    context_size: int,
+    prompt_size: int,
     model: str,
     prompt_tokens: int,
     completion_tokens: int,
@@ -29,10 +29,10 @@ def log_query(
         )
 
     print("\nContext")
-    print(f"Characters: {context_chars}")
+    print(f"Characters: {context_size}")
 
     print("\nPrompt")
-    print(f"Characters: {prompt_chars}")
+    print(f"Characters: {prompt_size}")
 
     print("\nLLM")
     print(f"Model: {model}")

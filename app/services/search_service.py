@@ -7,6 +7,7 @@ from app.services.context_builder_service import context_builder
 from app.services.prompt_builder import prompt_builder
 from app.services.llm_service import generate_answer
 from app.services.observability_service import log_query
+from app.services.bm25_service import bm25_retrieval
 
 from app.config.threshold_config import RETRIEVAL_THRESHOLD
 
@@ -15,7 +16,8 @@ def search_query(query: str, top_k: int, db: Session):
     sources = []
     seen = set()
 
-    results = chunks_retrieval(query, top_k, db)
+    # results = chunks_retrieval(query, top_k, db)
+    results = bm25_retrieval(query, top_k, db)
 
     if not results:
         return {"message": "No chunks found"}
@@ -44,8 +46,8 @@ def search_query(query: str, top_k: int, db: Session):
     elapsed_time = time.time() - start_time
 
     log_query(
-        llm_response=llm_response,
         query=query,
+        results=results,
         context_size=len(context),
         prompt_size=len(prompt),
         model=llm_response.model,

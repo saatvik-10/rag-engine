@@ -29,6 +29,9 @@ def bm25_retrieval(query: str, top_k: int, db: Session):
 
         for token in query_tokens:
             term_frequency = compute_tf(words, token)
+            
+            if term_frequency == 0:
+                continue
 
             score += compute_bm25(
                 term_frequency,
@@ -41,7 +44,7 @@ def bm25_retrieval(query: str, top_k: int, db: Session):
             {
                 "id": chunk.id,
                 "text": chunk.text,
-                "page_number": chunk.page,
+                "page": chunk.page,
                 "chunk_index": chunk.chunk_index,
                 "source": chunk.source,
                 "score": score,
