@@ -8,6 +8,7 @@ from app.services.prompt_builder import prompt_builder
 from app.services.llm_service import generate_answer
 from app.services.observability_service import log_query
 from app.services.bm25_service import bm25_retrieval
+from app.services.rrf_service import rrf_fusion
 
 from app.config.threshold_config import RETRIEVAL_THRESHOLD
 
@@ -16,15 +17,17 @@ def search_query(query: str, top_k: int, db: Session):
     sources = []
     seen = set()
 
-    # results = chunks_retrieval(query, top_k, db)
-    results = bm25_retrieval(query, top_k, db)
+    vector_results = chunks_retrieval(query, top_k, db)
+    bm25_results = bm25_retrieval(query, top_k, db)
+
+    results = rrf_fusion(vector_results, bm25_results)
 
     if not results:
         return {"message": "No chunks found"}
 
     # results already being sorted by descending similarity score
-    if results[0]["score"] < RETRIEVAL_THRESHOLD:
-        return {"message": "No relevant context retrieved"}
+    # if results[0]["score"] < RETRIEVAL_THRESHOLD:
+    #     return {"message": "No relevant context retrieved"}
 
     for result in results:
         key = (result["source"], result["page"])
