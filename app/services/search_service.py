@@ -9,6 +9,7 @@ from app.services.llm_service import generate_answer
 from app.services.observability_service import log_query
 from app.services.bm25_service import bm25_retrieval
 from app.services.rrf_service import rrf_fusion
+from app.services.reranker_service import rerank
 
 from app.config.threshold_config import RETRIEVAL_THRESHOLD
 
@@ -20,7 +21,10 @@ def search_query(query: str, top_k: int, db: Session):
     vector_results = chunks_retrieval(query, top_k, db)
     bm25_results = bm25_retrieval(query, top_k, db)
 
-    results = rrf_fusion(vector_results, bm25_results)
+    rrf_results = rrf_fusion(vector_results, bm25_results)
+
+    # results are sorted by Cross-Encoder relevance score.
+    results = rerank(query, rrf_results, top_k)
 
     if not results:
         return {"message": "No chunks found"}
