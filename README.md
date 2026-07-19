@@ -4,6 +4,38 @@ A modular Retrieval-Augmented Generation (RAG) engine built from scratch using F
 
 ---
 
+## Demo
+
+### 1. Ingest a PDF
+
+Upload a PDF document to extract text, generate embeddings, and index it for retrieval.
+
+<p align="center">
+  <img src="./app/public/ingest.png" width="900" alt="PDF Ingestion">
+</p>
+
+---
+
+### 2. Search
+
+Ask natural language questions against the indexed documents.
+
+<p align="center">
+  <img src="./app/public/search.png" width="900" alt="Search API">
+</p>
+
+---
+
+### 3. Grounded Response
+
+The engine retrieves relevant chunks using Hybrid Retrieval (Dense Retrieval + BM25 + RRF), reranks them with a Cross-Encoder, and generates a grounded answer with source citations.
+
+<p align="center">
+  <img src="./app/public/search_result.png" width="900" alt="Search Result">
+</p>
+
+---
+
 ## Features
 
 - PDF document ingestion
